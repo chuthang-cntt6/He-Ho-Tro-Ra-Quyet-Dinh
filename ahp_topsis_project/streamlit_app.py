@@ -77,23 +77,7 @@ if username:
     criteria_df = get_all_criteria()
     alternatives_df = get_all_alternatives()
     
-
-    # Hiển thị danh sách tiêu chí có sẵn
-    st.subheader("Tiêu chí có sẵn:")
-    st.dataframe(criteria_df[['name', 'description']])
-    
-    # Cho phép thêm tiêu chí mới
-    with st.expander("Thêm tiêu chí mới"):
-        new_criterion_name = st.text_input("Tên tiêu chí mới")
-        new_criterion_desc = st.text_input("Mô tả tiêu chí")
-        if st.button("Thêm tiêu chí") and new_criterion_name:
-            if add_criterion(new_criterion_name, new_criterion_desc):
-                st.success(f"Đã thêm tiêu chí: {new_criterion_name}")
-                st.rerun()
-            else:
-                st.error("Không thể thêm tiêu chí. Có thể tên tiêu chí đã tồn tại.")
-    
-    # --- Import file Excel và tự động cập nhật vào các bảng ở Bước 3 và 4 ---
+# --- Import file Excel và tự động cập nhật vào các bảng ở Bước 3 và 4 ---
     st.subheader("📥 Import dữ liệu từ file Excel")
     uploaded_file = st.file_uploader("Chọn file Excel để import", type=["xlsx", "xls"])
     if uploaded_file is not None and not st.session_state.get("imported", False):
@@ -159,6 +143,23 @@ if username:
             st.stop()   # 🛑 Dừng vòng lặp hiện tại để tránh lỗi session_state
         except Exception as e:
             st.error(f"❌ Lỗi khi đọc file Excel: {e}")
+
+    # Hiển thị danh sách tiêu chí có sẵn
+    st.subheader("Tiêu chí có sẵn:")
+    st.dataframe(criteria_df[['name', 'description']])
+    
+    # Cho phép thêm tiêu chí mới
+    with st.expander("Thêm tiêu chí mới"):
+        new_criterion_name = st.text_input("Tên tiêu chí mới")
+        new_criterion_desc = st.text_input("Mô tả tiêu chí")
+        if st.button("Thêm tiêu chí") and new_criterion_name:
+            if add_criterion(new_criterion_name, new_criterion_desc):
+                st.success(f"Đã thêm tiêu chí: {new_criterion_name}")
+                st.rerun()
+            else:
+                st.error("Không thể thêm tiêu chí. Có thể tên tiêu chí đã tồn tại.")
+    
+    
 
     # Chọn tiêu chí để sử dụng
     selected_criteria = st.multiselect(
@@ -722,7 +723,7 @@ if username:
             st.download_button(
                 label="📄 Tải tổng hợp PDF",
                 data=pdf_output,
-                file_name="ahp_full_result.pdf",
+                file_name="ahp_full_result.pdf",	
                 mime="application/pdf"
             )
 
